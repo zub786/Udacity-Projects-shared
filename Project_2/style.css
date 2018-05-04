@@ -1,0 +1,199 @@
+@font-face {
+  font-family: 'OpenSans';
+  src: url('fonts/OpenSans.eot?#iefix') format('embedded-opentype'),  url('fonts/OpenSans.woff') format('woff'), url('fonts/OpenSans.ttf')  format('truetype'), url('fonts/OpenSans.svg#OpenSans') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'OpenSans-Bold';
+  src: url('fonts/OpenSans-Bold.eot?#iefix') format('embedded-opentype'),  url('fonts/OpenSans-Bold.woff') format('woff'), url('fonts/OpenSans-Bold.ttf')  format('truetype'), url('fonts/OpenSans-Bold.svg#OpenSans-Bold') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+img{
+	max-width:100%;
+	vertical-align:middle;
+}
+*
+{
+ margin:0;
+ padding:0;
+ outline:none;
+ box-sizing:border-box;
+ -webkit-box-sizing:border-box;
+ -moz-box-sizing:border-box; 
+}
+:after, :before
+{
+ margin:0;
+ padding:0;
+ outline:none;
+ box-sizing:border-box;
+ -webkit-box-sizing:border-box;
+ -moz-box-sizing:border-box;
+}
+
+a
+{
+ text-decoration:none;
+ transition:all .5s linear;
+ -webkit-transition:all .5s linear;
+ -moz-transition:all .5s linear;
+ -o-transition:all .5s linear;
+ -ms-transition:all .5s linear;
+}
+
+.wrapper{
+ width:90%;
+ max-width:1200px;
+ margin:0 auto;
+}
+.header-top{
+	width:100%;
+	display:inline-block;
+	float:left;
+}
+.logo{
+	width:50%;
+	display:inline-block;
+	float:left;
+	padding:10px 0;
+}
+.logo-text{
+	width:50%;
+	float:right;
+	display:inline-block;
+	padding:22px 0;
+	text-align:right;
+}
+.logo-text h1{
+	font-size: 35px;
+	color: #02b3e4;
+	font-family: 'OpenSans-bold';
+	width: 100%;
+	display: inline-block;
+	font-weight: normal;
+}
+.logo-text p{
+	font-size:16px;
+	font-family: 'OpenSans';
+	color:#2d3c49;
+	width:100%;
+	display:inline-block;
+}
+.banner{
+	width:100%;
+	display:inline-block;
+}
+.my-works{
+	width:100%;
+	display:inline-block;
+	
+}
+.my-works h2{
+	color:#7d97ad;
+	 font-family: 'OpenSans-Bold';
+	 padding: 30px 0 10px;
+	 width: 100%;
+    display: inline-block;
+    font-size: 24px;
+}
+.my-works-2{
+	width: 100%;
+    display: inline-block;
+    float: left;
+    margin-bottom: 25px;
+}
+.my-works-2 li{
+	width:32%;
+	display:inline-block;
+	float:left;
+	margin-right:2%;}
+.my-works-2 li:nth-child(3n){
+	margin-right:0px;
+}
+.my-works-2 li h3{
+	color:#2d3c49;
+	 font-family: 'OpenSans-Bold';
+	 text-align:center;
+	 padding:10px 0 10px;
+	 width: 100%;
+    display: inline-block;
+    font-size: 20px;
+}
+.my-works-2 li p{
+	color:#2d3c49;
+	 font-family: 'OpenSans';
+	 text-align:center;
+	 width: 100%;
+    display: inline-block;
+    font-size: 20px;
+}
+
+/*====================================Responsive css ===================*/
+@media only screen and (min-width:961px) and (max-width:1200px){
+	.my-works-2 li p {
+    font-size: 16px;
+}
+}
+@media only screen and (min-width:768px) and (max-width:960px){
+	.my-works-2 li p {
+    font-size: 14px;
+}
+}
+@media only screen and (min-width:100px) and (max-width:767px){
+	.logo-text h1{
+	font-size: 28px;
+}
+.logo-text p{
+	font-size:14px;
+}
+.my-works-2 li{
+	width:100%;
+	margin-right:0;
+	text-align:center;
+	margin-bottom:15px;
+	}
+.my-works-2 li h3 {
+    padding: 4px 0 4px;
+}	
+.my-works h2 {
+    text-align: center;
+}
+}
+@media only screen and (min-width:100px) and (max-width:600px){
+	.logo-text h1 {
+    font-size: 22px;
+	}
+	.logo-text p {
+    font-size: 12px;
+	}
+}
+@media only screen and (min-width:100px) and (max-width:480px){
+	.logo {
+    width: 35%;
+	padding: 4px 0;
+	}
+	.logo a img{
+	width:80%;
+	display:inline-block;
+		}
+	.logo-text {
+    width: 65%;
+	}
+	.logo-text h1 {
+    font-size: 20px;
+	}
+	.logo-text p {
+    font-size: 11px;
+	}
+	.my-works h2 {
+    padding: 20px 0 5px;
+    font-size: 18px;
+	}
+	.my-works-2 li h3{
+	font-size:16px;
+	}
+	.my-works-2 li p{
+		font-size:14px;
+	}
