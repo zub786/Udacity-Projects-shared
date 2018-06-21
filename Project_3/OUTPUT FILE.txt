@@ -1,0 +1,42 @@
+QUESTION 1: What are the most
+popular three articles of all time ?
+Answer:
+
+        Article: Candidate is jerk, alleges rival | 338647 Views
+
+        Article: Bears love berries, alleges bear | 253801 Views
+
+        Article: Bad things gone, say good people | 170098 Views
+
+
+QUESTION 2: Who are the most
+popular article authors of all time ?
+Answer:
+
+        Author: Ursula La Multa | 507594 Views
+
+        Author: Rudolf von Treppenwitz | 423457 Views
+
+        Author: Anonymous Contributor | 170098 Views
+
+
+QUESTION 3:On which days did more than 1%
+of requests lead to errors ?
+Answer:
+On Date: 2016-07-02  | 1.002% Errors
+On Date: 2016-07-25  | 1.007% Errors
+On Date: 2016-07-28  | 1.012% Errors
+On Date: 2016-07-26  | 1.02% Errors
+On Date: 2016-07-30  | 1.022% Errors
+On Date: 2016-07-03  | 1.033% Errors
+On Date: 2016-07-11  | 1.038% Errors
+On Date: 2016-07-22  | 1.045% Errors
+On Date: 2016-07-15  | 1.05% Errors
+On Date: 2016-07-09  | 1.056% Errors
+On Date: 2016-07-08  | 1.076% Errors
+On Date: 2016-07-21  | 1.076% Errors
+On Date: 2016-07-06  | 1.081% Errors
+On Date: 2016-07-05  | 1.089% Errors
+On Date: 2016-07-24  | 1.109% Errors
+On Date: 2016-07-19  | 1.114% Errors
+On Date: 2016-07-17  | 3.187% Errors
