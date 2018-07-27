@@ -1,8 +1,7 @@
-from flask import Flask, render_template, request, redirect, jsonify, url_for, flash, g
+from flask import (Flask, render_template, request, redirect, jsonify, url_for, flash, g, session as login_session, make_response)
 from sqlalchemy import create_engine, asc
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
-from flask import session as login_session
 from models import Base, Category, Item, User
 from sqlalchemy import func
 import random, string
@@ -10,11 +9,11 @@ from oauth2client.client import flow_from_clientsecrets
 from oauth2client.client import FlowExchangeError
 import httplib2
 import json
-from flask import make_response
 import requests
 from passlib.apps import custom_app_context as pwd_context
 import random, string
 from itsdangerous import(TimedJSONWebSignatureSerializer as Serializer, BadSignature, SignatureExpired)
+from functools import wraps
 
 Base = declarative_base()
 secret_key = ''.join(random.choice(string.ascii_uppercase + string.digits) for x in xrange(32))
@@ -25,12 +24,26 @@ CLIENT_ID = json.loads(
 APPLICATION_NAME = "Catalog App Application"
 
 # Connect to Database and create database session
-engine = create_engine('sqlite:///catalog.db')
+engine = create_engine('sqlite:///catalogapp.db')
 Base.metadata.bind = engine
 
 DBSession = sessionmaker(bind=engine)
 session = DBSession()
 
+def login_required(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if 'username' in login_session:
+            print('exist ' + str(login_session.get('username')))
+            return f(*args, **kwargs)
+        else:
+            flash('You are not allowed to access there')
+            return redirect('/login')
+    return decorated_function
+
+
+
+# Error Page
 @app.route('/error')
 def Error():
     return render_template('_Error.html')
@@ -59,6 +72,7 @@ def showLogin():
                     login_session['picture'] = user.picture
                     login_session['email'] = user.email
                     login_session['provider'] = 'app'
+                    login_session['user_id'] = user.id
                     return redirect('/')
                 return render_template('loginAgain.html', Message = "Invalid Password")
             else:
@@ -101,7 +115,7 @@ def signup():
                 session = DBSession()
                 session.add(user)
                 session.commit()
-                newUser = session.query(User).filter_by(email = request.form.get('username')).one()
+                newUser = session.query(User).filter_by(email = request.form.get('username')).one_or_none()
                 return render_template('signupDone.html', SuccessMessage = request.form.get('displayName'))
             else:
                 
@@ -212,7 +226,7 @@ def createUser(login_session):
         session = DBSession()
         session.add(user)
         session.commit()
-        newUser = session.query(User).filter_by(email = login_session['email']).one()
+        newUser = session.query(User).filter_by(email = login_session['email']).one_or_none()
         return newUser.id
     except:
         return redirect('/error')
@@ -221,7 +235,7 @@ def createUser(login_session):
 def getUserID(user_email):
     try:
         session = DBSession()
-        user = session.query(User).filter_by(email = user_email).one()
+        user = session.query(User).filter_by(email = user_email).one_or_none()
         return user.id
     except:
         return None;
@@ -362,7 +376,7 @@ def fbdisconnect():
 def categoryitemJSON(category_id):
     try:
         session = DBSession()
-        category = session.query(category).filter_by(id = category_id).one()
+        category = session.query(Category).filter_by(id = category_id).one_or_none()
         items = session.query(Item).filter_by(
             category_id = category_id).all()
         return jsonify(items = [i.serialize for i in items])
@@ -375,7 +389,7 @@ def categoryitemJSON(category_id):
 def itemJSON(category_id, item_id):
     try:
         session = DBSession()
-        item = session.query(Item).filter_by(id = item_id).one()
+        item = session.query(Item).filter_by(id = item_id).one_or_none()
         return jsonify(item = item.serialize)
     except:
         return redirect('/error')
@@ -417,12 +431,14 @@ def showCategories():
 
 
 # Create a new category
+
 @app.route('/category/new/', methods = ['GET', 'POST'])
+@login_required
 def newCategory():
     try:
         session = DBSession()
         if request.method == 'POST':
-            newcategory = Category(name = request.form['name'])
+            newcategory = Category(name = request.form['name'], createdby = login_session.get('user_id'))
             session.add(newcategory)
             flash('New category %s Successfully Created' % newcategory.name)
             session.commit()
@@ -435,11 +451,12 @@ def newCategory():
 
 # Edit a category
 @app.route('/category/<int:category_id>/edit/', methods = ['GET', 'POST'])
+@login_required
 def editCategory(category_id):
     try:
         session = DBSession()
         editedCategory = session.query(
-            Category).filter_by(id = category_id).one()
+            Category).filter_by(id = category_id).one_or_none()
         if request.method == 'POST':
             if request.form['name']:
                 editedCategory.name = request.form['name']
@@ -454,11 +471,12 @@ def editCategory(category_id):
 
 # Delete a category
 @app.route('/category/<int:category_id>/delete/', methods = ['GET', 'POST'])
+@login_required
 def deleteCategory(category_id):
     try:
         session = DBSession()
         categoryToDelete = session.query(
-            Category).filter_by(id = category_id).one()
+            Category).filter_by(id = category_id).one_or_none()
         if request.method == 'POST':
             session.delete(categoryToDelete)
             flash('%s Successfully Deleted' % categoryToDelete.name)
@@ -475,12 +493,12 @@ def showItems(category_id):
     try:
         if login_session.get('logged_in'):
             session = DBSession()
-            category = session.query(Category).filter_by(id = category_id).one()
+            category = session.query(Category).filter_by(id = category_id).one_or_none()
             items = session.query(Item).filter_by(category_id = category_id).all()
             return render_template('items.html', items = items, category = category)
         else:
             session = DBSession()
-            category = session.query(Category).filter_by(id = category_id).one()
+            category = session.query(Category).filter_by(id = category_id).one_or_none()
             items = session.query(Item).filter_by(category_id= category_id).all()
             return render_template('itemsPublic.html', items = items, category = category)
     except:
@@ -489,10 +507,11 @@ def showItems(category_id):
 
 # Create a new item 
 @app.route('/category/<int:category_id>/item/new', methods = ['GET', 'POST'])
+@login_required
 def newItem(category_id):
     try:
         session = DBSession()
-        category = session.query(Category).filter_by(id = category_id).one()
+        category = session.query(Category).filter_by(id = category_id).one_or_none()
         if request.method == 'POST':
             newItem = Item(name = request.form['name'], description = request.form['description'], price = request.form['price'], category_id = category_id)
             session.add(newItem)
@@ -507,22 +526,27 @@ def newItem(category_id):
 
 # Edit a item
 @app.route('/category/<int:category_id>/item/<int:item_id>/edit', methods = ['GET', 'POST'])
+@login_required
 def editItem(category_id, item_id):
     try:
         session = DBSession()
-        editedItem = session.query(Item).filter(Item.id == item_id, Item.category_id == category_id).one()   
-        category = session.query(Category).filter_by(id = category_id).one()
+        editedItem = session.query(Item).filter(Item.id == item_id, Item.category_id == category_id).one_or_none()   
+        category = session.query(Category).filter_by(id = category_id).one_or_none()
         if request.method == 'POST':
-            if request.form['name']:
-                editedItem.name = request.form['name']
-            if request.form['description']:
-                editedItem.description = request.form['description']
-            if request.form['price']:
-                editedItem.price = request.form['price']
-            session.add(editedItem)
-            session.commit()
-            flash('Item Successfully Edited')
-            return redirect(url_for('showItems', category_id = category_id))
+            if category.createdby == login_session['user_id']:
+                if request.form['name']:
+                    editedItem.name = request.form['name']
+                if request.form['description']:
+                    editedItem.description = request.form['description']
+                if request.form['price']:
+                    editedItem.price = request.form['price']
+                session.add(editedItem)
+                session.commit()
+                flash('Item Successfully Edited')
+                return redirect(url_for('showItems', category_id = category_id))
+            else:
+                flash('Sorry! You have no authority to change in it.')
+                return redirect('/login')
         else:
             return render_template('editItem.html', category = category, item = editedItem)
     except:
@@ -535,11 +559,11 @@ def showItem(item_id):
     try:
         if login_session.get('logged_in'):
             session = DBSession()
-            item = session.query(Item).filter_by(id = item_id).one()
+            item = session.query(Item).filter_by(id = item_id).one_or_none()
             return render_template('viewItem.html', item = item)
         else:
             session = DBSession()
-            item = session.query(Item).filter_by(id = item_id).one()
+            item = session.query(Item).filter_by(id = item_id).one_or_none()
             return render_template('viewItemPublic.html', item = item)
     except:
         return redirect('/error')
@@ -547,16 +571,21 @@ def showItem(item_id):
 
 # Delete an item
 @app.route('/category/<int:category_id>/item/<int:item_id>/delete', methods = ['GET', 'POST'])
+@login_required
 def deleteItem(category_id, item_id):
     try:
         session = DBSession()
-        category = session.query(Category).filter_by(id = category_id).one()
-        itemToDelete = session.query(Item).filter_by(id = item_id).one()
+        category = session.query(Category).filter_by(id = category_id).one_or_none()
+        itemToDelete = session.query(Item).filter_by(id = item_id).one_or_none()
         if request.method == 'POST':
-            session.delete(itemToDelete)
-            session.commit()
-            flash('Item Successfully Deleted')
-            return redirect(url_for('showItems', category_id = category_id))
+            if category.createdby == login_session['user_id']:
+                session.delete(itemToDelete)
+                session.commit()
+                flash('Item Successfully Deleted')
+                return redirect(url_for('showItems', category_id = category_id))
+            else:
+                flash('Sorry! You have no authority to change in it')
+                return redirect('/login')
         else:
             return render_template('deleteItem.html', item = itemToDelete, category = category)
     except:

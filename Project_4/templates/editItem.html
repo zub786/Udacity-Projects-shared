@@ -5,13 +5,13 @@
 <h2> Edit item </h2>
 <form method='POST' action={{url_for('editItem', category_id = category.id, item_id = item.id)}} >
 	<p><lable> <strong>Name:</strong> </lable></p>
-	<input name='name' value="{{item.name}}" type='text' class="form-control" />
+	<input name='name' value="{{item.name}}" type='text' class="form-control" required/>
 
 	<p><lable> <strong>Description:</strong> </lable></p>
-	<textarea name='description' type='text' style="resize: vertical;" class="form-control">{{item.description}}</textarea>
+	<textarea name='description' type='text' style="resize: vertical;" class="form-control" required>{{item.description}}</textarea>
 
 	<p><lable> <strong>Price:</strong> </lable></p>
-	<input name='price' value="{{item.price}}" type='text' class="form-control" />
+	<input name='price' value="{{item.price}}" type='text' class="form-control" required/>
 	
 	
 	<br>
