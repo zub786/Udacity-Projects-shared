@@ -3,6 +3,21 @@
 
 <div class="item">
 <h2> Edit item </h2>
+{% with messages = get_flashed_messages() %}
+
+{% if messages %}
+
+
+{% for i in messages %}
+
+<p class="alert alert-danger message"> {{i}} </p> 
+
+{% endfor %}
+
+{% endif %}
+
+
+{% endwith %}
 <form method='POST' action={{url_for('editItem', category_id = category.id, item_id = item.id)}} >
 	<p><lable> <strong>Name:</strong> </lable></p>
 	<input name='name' value="{{item.name}}" type='text' class="form-control" required/>
