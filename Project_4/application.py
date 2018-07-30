@@ -22,7 +22,6 @@ Base = declarative_base()
 secret_key = ''.join(random.choice(
     string.ascii_uppercase + string.digits) for x in xrange(32))
 app = Flask(__name__)
-
 CLIENT_ID = json.loads(
     open('client_secrets.json', 'r').read())['web']['client_id']
 APPLICATION_NAME = "Catalog App Application"
@@ -85,7 +84,7 @@ def showLogin():
             else:
                 return render_template('loginAgain.html',
                                        Message="User Not Found!")
-    except:
+    except Exception, e:
         return redirect('/error')
 
 
@@ -99,7 +98,7 @@ def logout():
             gdisconnect()
         login_session.clear()
         return redirect('/')
-    except:
+    except Exception, e:
         return redirect('/error')
 
 
@@ -131,7 +130,7 @@ def signup():
                 return render_template('signupAgain.html',
                                        Message="""Sorry! user already exist
                                        against this email address""")
-    except:
+    except Exception, e:
         return redirect('/error')
 
 
@@ -230,7 +229,7 @@ def gconnect():
         flash("you are now logged in as %s" % login_session['username'])
         print "done!" + str(login_session['logged_in'])
         return output
-    except:
+    except Exception, e:
         return redirect('/error')
 
     # DISCONNECT - Revoke a current user's token and reset their login_session
@@ -247,7 +246,7 @@ def createUser(login_session):
         newUser = session.query(User).filter_by(
             email=login_session['email']).one_or_none()
         return newUser.id
-    except:
+    except Exception, e:
         return redirect('/error')
 
 
@@ -256,7 +255,7 @@ def getUserID(user_email):
         session = DBSession()
         user = session.query(User).filter_by(email=user_email).one_or_none()
         return user.id
-    except:
+    except Exception, e:       
         return None
 
 
@@ -294,7 +293,7 @@ def gdisconnect():
                 json.dumps('Failed to revoke token for given user.', 400))
             response.headers['Content-Type'] = 'application/json'
             return response
-    except:
+    except Exception, e:
         return redirect('/error')
 
 
@@ -382,7 +381,7 @@ def fbconnect():
                 150px;-moz-border-radius: 150px;"> '"""
         flash("Now logged in as %s" % login_session['username'])
         return output
-    except:
+    except Exception, e:
         return redirect('/error')
 
 
@@ -398,7 +397,7 @@ def fbdisconnect():
         h = httplib2.Http()
         result = h.request(url, 'DELETE')[1]
         return "you have been logged out"
-    except:
+    except Exception, e:
         return redirect('/error')
 
 
@@ -415,7 +414,7 @@ def categoryitemJSON(category_id):
         items = session.query(Item).filter_by(
             category_id=category_id).all()
         return jsonify(items=[i.serialize for i in items])
-    except:
+    except Exception, e:
         return redirect('/error')
 
 
@@ -426,7 +425,7 @@ def itemJSON(category_id, item_id):
         session = DBSession()
         item = session.query(Item).filter_by(id=item_id).one_or_none()
         return jsonify(item=item.serialize)
-    except:
+    except Exception, e:
         return redirect('/error')
 
 
@@ -437,7 +436,7 @@ def categoriesJSON():
         session = DBSession()
         categories = session.query(Category).all()
         return jsonify(categories=[r.serialize for r in categories])
-    except:
+    except Exception, e:
         return redirect('/error')
 
 
@@ -473,7 +472,7 @@ def showCategories():
                                                                 ).all()  
             return render_template('categoriesPublic.html',
                                    categories=categories, items=items)
-    except:
+    except Exception, e:
         return redirect('/error')
 
 # Create a new category
@@ -495,7 +494,7 @@ def newCategory():
             return redirect(url_for('showCategories'))
         else:
             return render_template('newCategory.html')
-    except:
+    except Exception, e:
         return redirect('/error')
 
 
@@ -518,7 +517,7 @@ def editCategory(category_id):
         else:
             return render_template('editCategory.html', 
                                    category=editedCategory)
-    except:
+    except Exception, e:
         return redirect('/error')
 
 # Delete a category
@@ -541,7 +540,7 @@ def deleteCategory(category_id):
         else:
             return render_template('deleteCategory.html',
                                    category=categoryToDelete)
-    except:
+    except Exception, e:
         return redirect('/error')
 
 
@@ -570,7 +569,7 @@ def showItems(category_id):
                 category_id=category_id).all()
             return render_template('itemsPublic.html',
                                    items=items, category=category)
-    except:
+    except Exception, e:
         return redirect('/error')
 
 
@@ -599,7 +598,7 @@ def newItem(category_id):
         else:
             return render_template('newItem.html',
                                    category_id=category_id)
-    except:
+    except Exception, e:
         return redirect('/error')
 
 
@@ -636,7 +635,7 @@ def editItem(category_id, item_id):
         else:
             return render_template('editItem.html',
                                    category=category, item=editedItem)
-    except:
+    except Exception, e:
         return redirect('/error')
 
 
@@ -652,7 +651,7 @@ def showItem(item_id):
             session = DBSession()
             item = session.query(Item).filter_by(id=item_id).one_or_none()
             return render_template('viewItemPublic.html', item=item)
-    except:
+    except Exception, e:
         return redirect('/error')
 
 
@@ -683,7 +682,7 @@ def deleteItem(category_id, item_id):
         else:
             return render_template('deleteItem.html',
                                    item=itemToDelete, category=category)
-    except:
+    except Exception, e:
         return redirect('/error')
 
 
