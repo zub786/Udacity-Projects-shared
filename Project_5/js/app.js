@@ -9,6 +9,7 @@ var locations = [
 ];
 // Create few global variable to access in multiple functions.
 var map;
+var snippet;
 var markerImage;
 var bounds;
 var isStart = true;
@@ -19,7 +20,6 @@ var markers = [];
 var largeInfowindow;
 // Declaring a single object globally to open one window at a time to exchange some infoWindow information temporarily
 var tempInfoWindow;
-
 
 /* Set the width of the side navigation to 250px and the left margin of the page content to 250px */
 function openNav() {
@@ -32,9 +32,11 @@ function closeNav() {
 document.getElementById("mySidenav").style.width = "0";
 document.getElementById("main").style.marginLeft = "0";
 }
+
 function googleError(){
 alert("Something went wrong, Could not load maps successfully");
 }
+
 function googleSuccess() {
 // Constructor creates a new map - only center and zoom are required.
 map = new google.maps.Map(document.getElementById('map'), {
@@ -87,6 +89,7 @@ var timeAutocomplete = new google.maps.places.Autocomplete(
 // on that markers position.
 function populateInfoWindow(marker, InfoWindow) {
 // Check to make sure the infowindow is not already opened on this marker.
+debugger;
 if (InfoWindow.marker != marker) {
     InfoWindow.marker = marker;
     InfoWindow.setContent('');
@@ -104,7 +107,7 @@ if (InfoWindow.marker != marker) {
                 if (status === google.maps.places.PlacesServiceStatus.OK) {
                     // Set the marker property on this infowindow so it isn't created again.
                         
-                    var innerHTML = '<div>';
+                    var innerHTML = '<div class="respoonsive-window">';
                     if (place.name) {
                         innerHTML += '<strong>' + place.name + '</strong>';
                     }
@@ -125,11 +128,25 @@ if (InfoWindow.marker != marker) {
                             place.opening_hours.weekday_text[6];
                     }
                     if (place.photos) {
-                        innerHTML += '<br><br><img src="' + place.photos[0].getUrl(
-                            { maxHeight: 100, maxWidth: 200 }) + '">';
+                        innerHTML += '<br><img src="' + place.photos[0].getUrl(
+                            { maxHeight: 100, maxWidth: 200 }) + '"><br>';
                     }
-                    innerHTML += '</div>';
+
+                    
+                    innerHTML += '<div id="wiki-details"></div></div>';
                     InfoWindow.setContent(innerHTML);
+                    $.ajax({
+                url: 'http://en.wikipedia.org/w/api.php',
+                data: { action: 'query', list: 'search', srsearch: marker.title, format: 'json' },
+                dataType: 'jsonp',
+                success: function(apiResult){
+                    debugger;
+                    console.log(apiResult.query.search[0].snippet);
+                    $('#wiki-details').append('<p><span style="text-transform: uppercase;font-weight: bold;">Wikipedia Information</span></p>');
+                    $('#wiki-details').append('<p>'+ apiResult.query.search[0].snippet +'</p>');
+                
+                }
+            });
                 }
             });
 
