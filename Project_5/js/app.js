@@ -139,14 +139,16 @@ if (InfoWindow.marker != marker) {
                 dataType: 'jsonp',
                 success: function(apiResult){
                     debugger;
-                    innerHTML = '';
+                    
+                    innerHTML += '<div class="respoonsive-window">';
                     innerHTML += '<strong>' + marker.title + '</strong>';
                     innerHTML += '<p><span style="text-transform: uppercase;font-weight: bold;">Wikipedia Information</span></p>';
                     if (apiResult.query.search.length > 0) {
-                        innerHTML += '<p>' + apiResult.query.search[0].snippet + '</p>';
+                        innerHTML += '<p>' + apiResult.query.search[0].snippet + '</p></div>';
                     }
                     else {
-                        innerHTML += '<p>Could not get information for wikipedia</p>';
+                        innerHTML += '<p><span style="text-transform: uppercase;font-weight: bold;">Wikipedia Information</span></p>';
+                        innerHTML += '<p>Could not get information for wikipedia</p></div>';
                     }
                     InfoWindow.setContent(innerHTML);
                 
@@ -168,13 +170,13 @@ if (InfoWindow.marker != marker) {
                 dataType: 'jsonp',
                 success: function (apiResult) {
                     innerHTML = '';
-                    innerHTML += '<strong>' + marker.title + '</strong>';
+                    innerHTML += '<div class="respoonsive-window"><strong>' + marker.title + '</strong>';
                     innerHTML += '<p><span style="text-transform: uppercase;font-weight: bold;">Wikipedia Information</span></p>';
                     if (apiResult.query.search.length > 0) {
                         innerHTML += '<p>' + apiResult.query.search[0].snippet + '</p>';
                     }
                     else {
-                        innerHTML += '<p>Could not get information for wikipedia</p>';
+                        innerHTML += '<p>Could not get information for wikipedia</p></div>';
                     }
                     InfoWindow.setContent(innerHTML);
 
@@ -182,9 +184,9 @@ if (InfoWindow.marker != marker) {
                 error: function (err) {
                     console.log(apiResult);
                     debugger;
-                    innerHTML += '<strong>' + marker.title + '</strong>';
+                    innerHTML += '<div class="respoonsive-window" ><strong>' + marker.title + '</strong>';
                     innerHTML += '<p><span style="text-transform: uppercase;font-weight: bold;">Wikipedia Information</span></p>';
-                    innerHTML += '<p>Could not get information for wikipedia</p>';
+                    innerHTML += '<p>Could not get information for wikipedia</p></div>';
                     InfoWindow.setContent(innerHTML);
                     alert(err);
 
