@@ -92,8 +92,9 @@ function populateInfoWindow(marker, InfoWindow) {
 debugger;
 if (InfoWindow.marker != marker) {
     InfoWindow.marker = marker;
-    InfoWindow.setContent('');
+    //InfoWindow.setContent('');
     var bounds = map.getBounds();
+    var innerHTML;
     var placesService = new google.maps.places.PlacesService(map);
     placesService.textSearch({
         query: marker.title,
@@ -107,7 +108,7 @@ if (InfoWindow.marker != marker) {
                 if (status === google.maps.places.PlacesServiceStatus.OK) {
                     // Set the marker property on this infowindow so it isn't created again.
                         
-                    var innerHTML = '<div class="respoonsive-window">';
+                    innerHTML = '<div class="respoonsive-window">';
                     if (place.name) {
                         innerHTML += '<strong>' + place.name + '</strong>';
                     }
@@ -131,19 +132,22 @@ if (InfoWindow.marker != marker) {
                         innerHTML += '<br><img src="' + place.photos[0].getUrl(
                             { maxHeight: 100, maxWidth: 200 }) + '"><br>';
                     }
-
-                    
-                    innerHTML += '<div id="wiki-details"></div></div>';
-                    InfoWindow.setContent(innerHTML);
                     $.ajax({
                 url: 'http://en.wikipedia.org/w/api.php',
                 data: { action: 'query', list: 'search', srsearch: marker.title, format: 'json' },
                 dataType: 'jsonp',
                 success: function(apiResult){
                     debugger;
-                    console.log(apiResult.query.search[0].snippet);
-                    $('#wiki-details').append('<p><span style="text-transform: uppercase;font-weight: bold;">Wikipedia Information</span></p>');
-                    $('#wiki-details').append('<p>'+ apiResult.query.search[0].snippet +'</p>');
+                    innerHTML = '';
+                    innerHTML += '<strong>' + marker.title + '</strong>';
+                    innerHTML += '<p><span style="text-transform: uppercase;font-weight: bold;">Wikipedia Information</span></p>';
+                    if (apiResult.query.search.length > 0) {
+                        innerHTML += '<p>' + apiResult.query.search[0].snippet + '</p>';
+                    }
+                    else {
+                        innerHTML += '<p>Could not get information for wikipedia</p>';
+                    }
+                    InfoWindow.setContent(innerHTML);
                 
                 }
             });
@@ -156,6 +160,44 @@ if (InfoWindow.marker != marker) {
                 InfoWindow.marker = undefined;
             });
         }
+        else {            
+            $.ajax({
+                url: 'http://en.wikipedia.org/w/api.php',
+                data: { action: 'query', list: 'search', srsearch: marker.title, format: 'json' },
+                dataType: 'jsonp',
+                success: function (apiResult) {
+                    innerHTML = '';
+                    innerHTML += '<strong>' + marker.title + '</strong>';
+                    innerHTML += '<p><span style="text-transform: uppercase;font-weight: bold;">Wikipedia Information</span></p>';
+                    if (apiResult.query.search.length > 0) {
+                        innerHTML += '<p>' + apiResult.query.search[0].snippet + '</p>';
+                    }
+                    else {
+                        innerHTML += '<p>Could not get information for wikipedia</p>';
+                    }
+                    InfoWindow.setContent(innerHTML);
+
+                },
+                error: function (err) {
+                    console.log(apiResult);
+                    debugger;
+                    innerHTML += '<strong>' + marker.title + '</strong>';
+                    innerHTML += '<p><span style="text-transform: uppercase;font-weight: bold;">Wikipedia Information</span></p>';
+                    innerHTML += '<p>Could not get information for wikipedia</p>';
+                    InfoWindow.setContent(innerHTML);
+                    alert(err);
+
+
+                }
+            });
+            
+            InfoWindow.open(map, marker);
+            // Make sure the marker property is cleared if the infowindow is closed.
+            InfoWindow.addListener('closeclick', function () {
+                InfoWindow.marker = undefined;
+            });
+        }
+       
     });
 }
 }
