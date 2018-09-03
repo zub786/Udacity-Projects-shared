@@ -88,7 +88,8 @@ var timeAutocomplete = new google.maps.places.Autocomplete(
 // one infowindow which will open at the marker that is clicked, and populate based
 // on that markers position.
 function populateInfoWindow(marker, InfoWindow) {
-// Check to make sure the infowindow is not already opened on this marker.
+    // Check to make sure the infowindow is not already opened on this marker.
+    debugger;
 debugger;
 if (InfoWindow.marker != marker) {
     InfoWindow.marker = marker;
@@ -234,7 +235,7 @@ this.ShowWindow = function (marker) {
     M.setMap(map);
     M.setPosition(marker.location());
     M.title = marker.title();
-    tempInfoWindow.setContent('<div>' + marker.title() + '</div>');
+    tempInfoWindow.marker = marker.location();
     populateInfoWindow(M, tempInfoWindow);
     // after populating window, just zoom map to near the location
     zoomToArea(marker.title(), marker.location());
