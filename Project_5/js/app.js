@@ -118,8 +118,8 @@ function makeMarkerIcon(markerColor) {
 // on that markers position.
 function populateInfoWindow(marker, InfoWindow) {
     // Check to make sure the infowindow is not already opened on this marker.
-    debugger;
-debugger;
+    
+
 if (InfoWindow.marker != marker) {
     InfoWindow.marker = marker;
     //InfoWindow.setContent('');
@@ -167,7 +167,7 @@ if (InfoWindow.marker != marker) {
                 data: { action: 'query', list: 'search', srsearch: marker.title, format: 'json' },
                 dataType: 'jsonp',
                 success: function(apiResult){
-                    debugger;
+                    
                     
                     innerHTML += '<div class="respoonsive-window">';
                     innerHTML += '<strong>' + marker.title + '</strong>';
@@ -182,7 +182,7 @@ if (InfoWindow.marker != marker) {
                     InfoWindow.setContent(innerHTML);
                 },
                 error: function (err) {
-                    debugger;
+                    
                     innerHTML = '';
                     innerHTML += '<div class="respoonsive-window">';
                     innerHTML += '<strong>' + marker.title + '</strong>';
@@ -220,8 +220,6 @@ if (InfoWindow.marker != marker) {
 
                 },
                 error: function (err) {
-                    console.log(apiResult);
-                    debugger;
                     innerHTML += '<div class="respoonsive-window" ><strong>' + marker.title + '</strong>';
                     innerHTML += '<p><span style="text-transform: uppercase;font-weight: bold;">Wikipedia Information</span></p>';
                     innerHTML += '<p>Could not get information for wikipedia</p></div>';
@@ -263,7 +261,7 @@ var M = new google.maps.Marker();
 var icon;
 // we fire this function on click of items listed in left pane after filtration.
 this.ShowWindow = function (marker) {
-    debugger;
+    
     M.setIcon(highlightedIcon);
     M.setMap(map);
     M.setPosition(marker.location());
@@ -307,7 +305,7 @@ function zoomToArea(title, location) {
 // second for if filter text box has something to filter list of pre defined default locations
 // But on change function will file as you press tab after entering text or select item from dropdown
 this.search = ko.computed(function () {
-    debugger;
+    
     M.setMap(null);
     searchResult = this.searchBox().toLowerCase();
     tempArray = [];
