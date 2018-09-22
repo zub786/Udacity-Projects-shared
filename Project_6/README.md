@@ -12,7 +12,7 @@ This is catalog application working live on lightsail instance.Following are the
 	Passlib
 	oauth2client
 ## Server Details:
-	URL: http://18.185.103.217
+	URL: http://18.184.157.153/
 	SSH Port Configured and Allowed in Firewall: 22
 	HTTP Port Configured and Allowed in Firewall: 80
 	NTP Port Configured and Allowed in Firewall: 123
