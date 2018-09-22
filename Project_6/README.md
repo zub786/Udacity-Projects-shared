@@ -13,7 +13,7 @@ This is catalog application working live on lightsail instance.Following are the
 	oauth2client
 ## Server Details:
 	URL: http://18.185.103.217
-	SSH Port Configured and Allowed in Firewall: 2200
+	SSH Port Configured and Allowed in Firewall: 22
 	HTTP Port Configured and Allowed in Firewall: 80
 	NTP Port Configured and Allowed in Firewall: 123
 ## User Details:
