@@ -1,5 +1,5 @@
 # Lightsail Instance Final Project
-This is catalog apaplication working live on lightsail instance.Following are the details to access it.
+This is catalog application working live on lightsail instance.Following are the details to access it.
 
 
 
