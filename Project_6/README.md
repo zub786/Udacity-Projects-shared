@@ -17,7 +17,7 @@ This is catalog application working live on lightsail instance.Following are the
 	HTTP Port Configured and Allowed in Firewall: 80
 	NTP Port Configured and Allowed in Firewall: 123
 ## User Details:
-	User for Testing:
+	Sudoer User for Testing:
 	Username : grader
 	Password: grader
 	Private Key is attached with it named as private_key.pem.
