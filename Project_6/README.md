@@ -65,6 +65,6 @@ This is catalog application working live on lightsail instance.Following are the
 	Sudoer User for Testing:
 	Username : grader
 	Password: grader
-	Private Key is attached with it named as private_key.pem.
+	Private/public key as grader user is attached with it.
 
 For furthur query, you can contact at Email: muhammad.zubair@arbisoft.pk
