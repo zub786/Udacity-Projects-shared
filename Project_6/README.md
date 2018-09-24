@@ -27,18 +27,18 @@ This is catalog application working live on lightsail instance.Following are the
 	15. "from application" phrase is actually the name og my main python file.
 	16. Then i created my project's configuration file in apache server named as LinuxProject.conf.
 	17. This file contains the following content:
-<VirtualHost *>
+	<VirtualHost *>
 
-	ServerName 18.184.157.153
-	WSGIScriptAlias / /var/www/LinuxProject/LinuxProject.wsgi
-	WSGIDaemonProcess Hello World
-	<Directory /var/www/LinuxProject >
-		WSGIProcessGroup Hello World
-		WSGIApplicationGroup %{GLOBAL}
-		Order deny,allow
-		Allow from all
-	</Directory>
-</VirtualHost>
+		ServerName 18.184.157.153
+		WSGIScriptAlias / /var/www/LinuxProject/LinuxProject.wsgi
+		WSGIDaemonProcess Hello World
+		<Directory /var/www/LinuxProject >
+			WSGIProcessGroup Hello World
+			WSGIApplicationGroup %{GLOBAL}
+			Order deny,allow
+			Allow from all
+		</Directory>
+	</VirtualHost>
 	18. Just after setting up above settings, i disable default apache site configuration by executing following command:
 	sudo a2dissite 000-default.conf
 	19. Then Restar server by executing sudo service apache2 restart
