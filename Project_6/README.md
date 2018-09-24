@@ -47,7 +47,10 @@ This is catalog application working live on lightsail instance.Following are the
 	21. Then i give the permissions to my database file by executing chmod 766 /var/www/LinuxProject/catalogapp.db
 	22. So now currunt user or the user i have give permission can access to database and perform read write opertions gracefully.
 
-
+## Third Party Resources:
+	Used Amazon AWS Lightsail Server Instance for hosting project.
+	Used git bash developer tool as ssh terminal in order to login on server remotely.
+	Used Git Hub Version Control System to clone the project code.
 ## Packages & Softwares installed on this instance are:
 	Apache2
 	Mod_wsgi Application
