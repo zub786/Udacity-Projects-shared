@@ -29,7 +29,7 @@ This is catalog application working live on lightsail instance.Following are the
 	17. This file contains the following content:
 	<VirtualHost *>
 
-		ServerName 18.184.157.153
+		ServerName 54.93.80.85
 		WSGIScriptAlias / /var/www/LinuxProject/LinuxProject.wsgi
 		WSGIDaemonProcess Hello World
 		<Directory /var/www/LinuxProject >
