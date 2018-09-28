@@ -29,7 +29,7 @@ This is catalog application working live on lightsail instance.Following are the
 	17. This file contains the following content:
 	<VirtualHost *>
 
-		ServerName 54.93.80.85
+		ServerName 18.184.23.195
 		WSGIScriptAlias / /var/www/LinuxProject/LinuxProject.wsgi
 		WSGIDaemonProcess Hello World
 		<Directory /var/www/LinuxProject >
@@ -60,7 +60,7 @@ This is catalog application working live on lightsail instance.Following are the
 	Passlib
 	oauth2client
 ## Server Details:
-	URL: http://18.184.157.153/
+	URL: http://18.184.23.195/
 	SSH Port Configured and Allowed in Firewall: 2200
 	HTTP Port Configured and Allowed in Firewall: 80
 	NTP Port Configured and Allowed in Firewall: 123
